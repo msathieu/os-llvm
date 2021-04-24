@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by MSathieu
 
 #include "clang/Driver/Driver.h"
 #include "InputInfo.h"
@@ -37,6 +38,7 @@
 #include "ToolChains/Myriad.h"
 #include "ToolChains/NaCl.h"
 #include "ToolChains/NetBSD.h"
+#include "ToolChains/OS.h"
 #include "ToolChains/OpenBSD.h"
 #include "ToolChains/PPCLinux.h"
 #include "ToolChains/PS4CPU.h"
@@ -5094,6 +5096,9 @@ const ToolChain &Driver::getToolChain(const ArgList &Args,
       break;
     case llvm::Triple::OpenBSD:
       TC = std::make_unique<toolchains::OpenBSD>(*this, Target, Args);
+      break;
+    case llvm::Triple::MyOS:
+      TC = std::make_unique<toolchains::MyOS>(*this, Target, Args);
       break;
     case llvm::Triple::NetBSD:
       TC = std::make_unique<toolchains::NetBSD>(*this, Target, Args);

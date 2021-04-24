@@ -10,6 +10,7 @@
 // target triple.
 //
 //===----------------------------------------------------------------------===//
+// Modified by MSathieu
 
 #include "Targets.h"
 
@@ -495,6 +496,8 @@ TargetInfo *AllocateTarget(const llvm::Triple &Triple,
       return new NetBSDI386TargetInfo(Triple, Opts);
     case llvm::Triple::OpenBSD:
       return new OpenBSDI386TargetInfo(Triple, Opts);
+    case llvm::Triple::MyOS:
+      return new MyOSTargetInfo<X86_64TargetInfo>(Triple, Opts);
     case llvm::Triple::FreeBSD:
       return new FreeBSDTargetInfo<X86_32TargetInfo>(Triple, Opts);
     case llvm::Triple::Fuchsia:

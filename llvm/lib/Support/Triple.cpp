@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by MSathieu
 
 #include "llvm/ADT/Triple.h"
 #include "llvm/ADT/STLExtras.h"
@@ -212,6 +213,7 @@ StringRef Triple::getOSTypeName(OSType Kind) {
   case NaCl: return "nacl";
   case NetBSD: return "netbsd";
   case OpenBSD: return "openbsd";
+  case MyOS: return "os";
   case PS4: return "ps4";
   case RTEMS: return "rtems";
   case Solaris: return "solaris";
@@ -508,6 +510,7 @@ static Triple::OSType parseOS(StringRef OSName) {
     .StartsWith("macos", Triple::MacOSX)
     .StartsWith("netbsd", Triple::NetBSD)
     .StartsWith("openbsd", Triple::OpenBSD)
+    .StartsWith("os", Triple::MyOS)
     .StartsWith("solaris", Triple::Solaris)
     .StartsWith("win32", Triple::Win32)
     .StartsWith("windows", Triple::Win32)

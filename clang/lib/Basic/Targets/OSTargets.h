@@ -8,6 +8,7 @@
 //
 // This file declares OS specific TargetInfo types.
 //===----------------------------------------------------------------------===//
+// Modified by MSathieu
 
 #ifndef LLVM_CLANG_LIB_BASIC_TARGETS_OSTARGETS_H
 #define LLVM_CLANG_LIB_BASIC_TARGETS_OSTARGETS_H
@@ -492,6 +493,22 @@ public:
       this->MCountName = "_mcount";
       break;
     }
+  }
+};
+
+template <typename Target>
+class LLVM_LIBRARY_VISIBILITY MyOSTargetInfo : public OSTargetInfo<Target> {
+protected:
+  void getOSDefines(const LangOptions &Opts, const llvm::Triple &Triple,
+                    MacroBuilder &Builder) const override {
+    DefineStd(Builder, "unix", Opts);
+    Builder.defineMacro("__ELF__");
+  }
+
+public:
+  MyOSTargetInfo(const llvm::Triple &Triple, const TargetOptions &Opts)
+      : OSTargetInfo<Target>(Triple, Opts) {
+    this->HasFloat128 = true;
   }
 };
 

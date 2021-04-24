@@ -1,3 +1,4 @@
+# Modified by MSathieu
 set(LLVM_LINK_COMPONENTS
   BinaryFormat
   Option
@@ -64,6 +65,7 @@ add_clang_library(clangDriver
   ToolChains/NaCl.cpp
   ToolChains/NetBSD.cpp
   ToolChains/OpenBSD.cpp
+  ToolChains/OS.cpp
   ToolChains/PS4CPU.cpp
   ToolChains/RISCVToolchain.cpp
   ToolChains/Solaris.cpp
