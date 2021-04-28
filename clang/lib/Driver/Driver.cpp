@@ -597,6 +597,10 @@ static llvm::Triple computeTargetTriple(const Driver &D,
 // based on which -f(no-)?lto(=.*)? option occurs last.
 void Driver::setLTOMode(const llvm::opt::ArgList &Args) {
   LTOMode = LTOK_None;
+  if (computeTargetTriple(*this, TargetTriple, Args).getOS() ==
+      llvm::Triple::MyOS) {
+    LTOMode = LTOK_Full;
+  }
   if (!Args.hasFlag(options::OPT_flto, options::OPT_flto_EQ,
                     options::OPT_fno_lto, false))
     return;
