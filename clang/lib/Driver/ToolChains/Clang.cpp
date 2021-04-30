@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
-
+// Modified by MSathieu
 #include "Clang.h"
 #include "AMDGPU.h"
 #include "Arch/AArch64.h"
@@ -1661,6 +1661,12 @@ void Clang::RenderTargetOptions(const llvm::Triple &EffectiveTriple,
   case llvm::Triple::ve:
     AddVETargetArgs(Args, CmdArgs);
     break;
+  }
+  if (TC.getTriple().getOS() == llvm::Triple::MyOS) {
+    if (!Args.hasArg(options::OPT_fvisibility_EQ)) {
+      CmdArgs.push_back("-fvisibility");
+      CmdArgs.push_back("hidden");
+    }
   }
 }
 
