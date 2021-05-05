@@ -50,4 +50,8 @@ MyOS::MyOS(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
     : Generic_ELF(D, Triple, Args) {
   getFilePaths().push_back(getDriver().SysRoot + "/lib");
 }
+void MyOS::AddClangSystemIncludeArgs(const llvm::opt::ArgList &DriverArgs,
+                                     llvm::opt::ArgStringList &CC1Args) const {
+  addSystemInclude(DriverArgs, CC1Args, getDriver().SysRoot + "/include");
+}
 Tool *MyOS::buildLinker() const { return new tools::os::Linker(*this); }

@@ -36,6 +36,9 @@ public:
   GetDefaultStackProtectorLevel(bool KernelOrKext) const override {
     return LangOptions::SSPStrong;
   }
+  void
+  AddClangSystemIncludeArgs(const llvm::opt::ArgList &DriverArgs,
+                            llvm::opt::ArgStringList &CC1Args) const override;
   const char *getDefaultLinker() const override { return "ld.lld"; }
 
 protected:
