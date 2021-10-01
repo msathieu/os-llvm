@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by msathieu
 
 #ifndef LLVM_ADT_TRIPLE_H
 #define LLVM_ADT_TRIPLE_H
@@ -177,6 +178,7 @@ public:
     MacOSX,
     NetBSD,
     OpenBSD,
+    MyOS,
     Solaris,
     Win32,
     ZOS,

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by msathieu
 #include "clang/Driver/SanitizerArgs.h"
 #include "ToolChains/CommonArgs.h"
 #include "clang/Basic/Sanitizers.h"
@@ -472,7 +473,9 @@ SanitizerArgs::SanitizerArgs(const ToolChain &TC,
                          SanitizerKind::KernelHWAddress)};
   // Enable toolchain specific default sanitizers if not explicitly disabled.
   SanitizerMask Default = TC.getDefaultSanitizers() & ~AllRemove;
-
+  if (TC.getTriple().getOS() == llvm::Triple::MyOS) {
+    Default |= SanitizerKind::CFI;
+  }
   // Disable default sanitizers that are incompatible with explicitly requested
   // ones.
   for (auto G : IncompatibleGroups) {
@@ -1180,6 +1183,7 @@ void SanitizerArgs::addArgs(const ToolChain &TC, const llvm::opt::ArgList &Args,
   // Require -fvisibility= flag on non-Windows when compiling if vptr CFI is
   // enabled.
   if (Sanitizers.hasOneOf(CFIClasses) && !TC.getTriple().isOSWindows() &&
+      TC.getTriple().getOS() != llvm::Triple::MyOS &&
       !Args.hasArg(options::OPT_fvisibility_EQ)) {
     TC.getDriver().Diag(clang::diag::err_drv_argument_only_allowed_with)
         << lastArgumentForMask(TC.getDriver(), Args,

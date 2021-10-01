@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by msathieu
 
 #include "clang/Driver/Driver.h"
 #include "ToolChains/AIX.h"
@@ -37,6 +38,7 @@
 #include "ToolChains/Myriad.h"
 #include "ToolChains/NaCl.h"
 #include "ToolChains/NetBSD.h"
+#include "ToolChains/OS.h"
 #include "ToolChains/OpenBSD.h"
 #include "ToolChains/PPCLinux.h"
 #include "ToolChains/PS4CPU.h"
@@ -621,6 +623,10 @@ parseLTOMode(Driver &D, const llvm::opt::ArgList &Args, OptSpecifier OptPos,
 // Parse the LTO options.
 void Driver::setLTOMode(const llvm::opt::ArgList &Args) {
   LTOMode = LTOK_None;
+  if (computeTargetTriple(*this, TargetTriple, Args).getOS() ==
+      llvm::Triple::MyOS) {
+    LTOMode = LTOK_Full;
+  }
   if (auto M = parseLTOMode(*this, Args, options::OPT_flto,
                             options::OPT_fno_lto, options::OPT_flto_EQ,
                             /*IsOffload=*/false))
@@ -5265,6 +5271,9 @@ const ToolChain &Driver::getToolChain(const ArgList &Args,
       break;
     case llvm::Triple::OpenBSD:
       TC = std::make_unique<toolchains::OpenBSD>(*this, Target, Args);
+      break;
+    case llvm::Triple::MyOS:
+      TC = std::make_unique<toolchains::MyOS>(*this, Target, Args);
       break;
     case llvm::Triple::NetBSD:
       TC = std::make_unique<toolchains::NetBSD>(*this, Target, Args);

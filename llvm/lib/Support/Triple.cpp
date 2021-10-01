@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by msathieu
 
 #include "llvm/ADT/Triple.h"
 #include "llvm/ADT/STLExtras.h"
@@ -515,6 +516,7 @@ static Triple::OSType parseOS(StringRef OSName) {
     .StartsWith("macos", Triple::MacOSX)
     .StartsWith("netbsd", Triple::NetBSD)
     .StartsWith("openbsd", Triple::OpenBSD)
+    .StartsWith("os", Triple::MyOS)
     .StartsWith("solaris", Triple::Solaris)
     .StartsWith("win32", Triple::Win32)
     .StartsWith("windows", Triple::Win32)

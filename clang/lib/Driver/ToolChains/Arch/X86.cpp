@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
+// Modified by msathieu
 
 #include "X86.h"
 #include "ToolChains/CommonArgs.h"
@@ -89,6 +90,10 @@ std::string x86::getX86TargetCPU(const ArgList &Args,
   if (Triple.isAndroid())
     return Is64Bit ? "x86-64" : "i686";
 
+  if (Triple.getOS() == llvm::Triple::MyOS) {
+    return "x86-64-v2";
+  }
+
   // Everything else goes to x86-64 in 64-bit mode.
   if (Is64Bit)
     return "x86-64";
@@ -141,7 +146,9 @@ void x86::getX86TargetFeatures(const Driver &D, const llvm::Triple &Triple,
     } else
       Features.push_back("+ssse3");
   }
-
+  if (Triple.getOS() == llvm::Triple::MyOS) {
+    Features.push_back("+retpoline");
+  }
   // Translate the high level `-mretpoline` flag to the specific target feature
   // flags. We also detect if the user asked for retpoline external thunks but
   // failed to ask for retpolines themselves (through any of the different
